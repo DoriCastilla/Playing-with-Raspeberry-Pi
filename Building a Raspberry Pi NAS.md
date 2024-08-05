@@ -186,7 +186,9 @@ Find your drive:
 lsblk
 ```
 If you had used the script from step 3 a partition is already there: sda1.
+
 ![Screenshot 2024-08-02 151915](https://github.com/user-attachments/assets/c6fd37ce-b1ca-45b6-889a-d2ecf44cfa9f)
+
 If the partition is not there: 
 ```
 sudo fdisk /dev/sda
@@ -197,9 +199,13 @@ This is the command for formatting the disk:
 sudo mkfs.ext4 /dev/sda1
 ```
 If you had used the script from step 3 it will be already mounted. Go to next step.
+
 ![Screenshot 2024-08-02 152445](https://github.com/user-attachments/assets/10ba8987-36ea-49f7-8cfd-a01b651a7d8b)
+
 If not mounted:
+
 ![Screenshot 2024-07-08 212705](https://github.com/user-attachments/assets/3bc50103-d5c1-4a36-b79c-08876d9150c8)
+
 You must create a mount point:
 ```
 sudo mkdir -p /mnt/sda1
@@ -213,6 +219,7 @@ Add this line at the end:
 dev/sda1 /mnt/sda1/ ext4 defaults,noatime 0 1
 ```
 ![Screenshot 2024-07-08 215338](https://github.com/user-attachments/assets/920bb773-fc0b-413a-a2d0-ca52adb9ecb0)
+
 Ctrl+x and Y to save the changes.
 Now you must reload the file "fstab", to do it without to rebooting the system: 
 ```
@@ -223,6 +230,7 @@ Check the drive is already mounted:
 ls -l /mnt
 ```
 ![Screenshot 2024-08-02 112132](https://github.com/user-attachments/assets/7a20d97a-6446-4844-bd17-dc235b9c9ee3)
+
 ## STEP 6: Create the folder you will share
 Create a shared folder on the mount point of the partition we made in the storage drive:
 ```
@@ -271,14 +279,18 @@ sudo systemctl restart smbd
 ### STEP 8.1: Map Samba drive in Windows 11
 Option 1: 
 By the interface:
+
 ![Screenshot 2024-07-08 221141](https://github.com/user-attachments/assets/0f7f9244-c598-4c4a-b17c-9a225068be45)
+
 Create the access to the network folder:
 Select a not-used letter for the drive and set the folder address.
 In this case, it would be: 
 Z:
 \\192.168.1.113\shared 
 Remember, you had set the static IP and the name of the shared folder comes in the script.
+
 ![Screenshot 2024-07-09 141955](https://github.com/user-attachments/assets/81004763-fba9-460a-9ba9-7d221d4bcc19)
+
 Option 2: 
 By Command Prompt:
 ```
