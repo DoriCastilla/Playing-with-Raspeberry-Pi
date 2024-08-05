@@ -10,7 +10,7 @@ Components:
 - Screen   
 - Keyboard
 - Mouse
-<br>
+
 ## **STEP 1: Prepare the Raspberry PI image**
 Download the RPI OS image software [here](https://www.raspberrypi.com/software/).
 I use **Imager 1.8.5** download for Windows.
