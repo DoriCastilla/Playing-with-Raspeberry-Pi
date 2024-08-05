@@ -335,7 +335,7 @@ Now, by the interface:
 ```
 smb://192.168.1.113/shared
 ```
-Click Connet.
+Click Connect.
 Set username and password.
 
 Open the folder and start to share between your LAN devices!
