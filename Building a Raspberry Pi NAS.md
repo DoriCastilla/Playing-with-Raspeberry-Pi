@@ -1,4 +1,4 @@
-# **How to build a Raspberry Pi NAS**
+# **How to build a Raspberry Pi NAS. Guide for beginners**
 Objective: to install and configure a Raspeberry Pi NAS in a SOHO LAN
 Components: 
 - Raspeberri Pi 3b+ (RPI from now)
