@@ -1,9 +1,9 @@
 # **How to build a Raspberry Pi NAS. Guide for beginners**
 Objective: to install and configure a Raspeberry Pi NAS in a SOHO LAN
 Components: 
-- Raspeberri Pi 3b+ (RPI from now)
-- SDHC card 16GB
-- Hard disk or USB for starage disk
+- Raspeberri Pi 3b+ (RPi from now)
+- USB memory or SD card 16GB for the Operative System.
+- Hard disk or USB for storage disk
 - RPI image 
 - PuTTy software (optional)
 - Ehternet (optional)
@@ -11,36 +11,36 @@ Components:
 - Keyboard
 - Mouse
 
-## STEP 1: Prepare the Raspberry PI image
-Download the RPI OS image software [here](https://www.raspberrypi.com/software/).
-I use **Imager 1.8.5** download for Windows.
+## STEP 1: Prepare the Raspberry Pi image
+Download the RPi OS image software [here](https://www.raspberrypi.com/software/).
+For this guide I did use **Imager version 1.8.5** downloaded for Windows.
+Plug in the SD card in your card reader. 
  
 Select the settings:
-- Raspberry Pi Device: **RASPBERRY PI 3**
+- RPi Device: **RASPBERRY PI 3**
 - Operating system: **RASPBERRY PI OS 64BIT**
-- Storage: **SDHC CARD**
+- Storage: **SDHC CARD** (or USB). 
  
 Adjust the settings: 
 - Set username and password of your system (in this case it is pi / pi)
-- Add wifi information.
-- Enable ssh
+- Add your wifi information if you will connect to the NAS via wifi.
+- Select "enable ssh".
  
 Open it and ignore pop-up messages that can come out. 
  
-Once it is completed with the writing and verifying, set the SDHC card into the RPI, power it on and connect the hard disk storage and the periferics elements (keyboard, screen and mouse). 
-I also I also connected my RPI to the internet by Ethernet.
- 
-## STEP 2: Find the IP of the RPI
+Once it is completed with the writing and verifying, set the SDHC card into the RPi, power it on, and connect the hard disk storage and the peripherals (keyboard, screen, and mouse) to the RPi. 
+I also connected my RPI to the internet by Ethernet. Turn the RPi on, it will take a few minutes to get ready.
+
+## STEP 2: Find the IP of the RPi
 Options:
 1. Via router DHCP leases, look for the RPI system name, you gave the system in the image you installed in the SDHC card.
 2. Via router by the MAC address in the list of connected devices on the router settings.
-3. c.	Open the terminal and write the command: 
+3. Open the terminal and write the command (your IP is a number like 192.168.xxx.xxx):  
 ```
 ifconfig
 ```
- 
-## STEP 3: Access to your RPI in remot
-<br> 
+
+## STEP 3: Access to your RPi in remote
 When you connect remotely by PuTTY you will not need the peripherals anymore.
 Open PuTTy.
 Hostname: the IP of your RPI.
@@ -55,7 +55,12 @@ Set the static IP and install and config Samba in the staticip.sh :
 ```
 nano staticip.sh
 ```
-And write down this script and edit it with your own information where needed: 
+And write down this script and edit it with your information where needed:
+- username and password you set,
+- static IP you choose,
+- gateway and DNS if needed,
+- the owner is the user you set and
+- wifi "yes" if you want to use it: 
 ```
 #!/bin/bash
 
@@ -71,9 +76,7 @@ SHARED_DIRECTORY_OWNER="pi:pi" # Change this to your desired owner
 ETH_INTERFACE="eth0"
 WIFI_INTERFACE="wlan0"
 USE_WIFI="no" # Change this to "yes" if you are using WiFi
-```
-Continue the script to set the static IP:
-```
+
 # Function to set static IP for Bookworm 64-bit
 set_static_ip_bookworm() {
     echo "Setting static IP for Bookworm 64-bit..."
@@ -121,25 +124,19 @@ if [[ "$os_version" == "bookworm" && "$architecture" == "aarch64" ]]; then
 else
     set_static_ip_32bit
 fi
-```
-This command will install Samba:
-```
+
 # Update and install samba
 echo "Updating system and installing Samba..."
 sudo apt-get update
 sudo apt-get install samba samba-common-bin -y
-```
-This will create the user, with the username and password you did set: 
-```
- Create a new user
+ 
+# Create a new user
 echo "Creating new user..."
 sudo adduser --disabled-password --gecos "" $USERNAME
 
 # Set password for the new SMB user
 echo -e "$PASSWORD\n$PASSWORD" | sudo smbpasswd -a $USERNAME
-```
-Configure and restart Samba:
-```
+
 # Configure Samba
 echo "Configuring Samba..."
 sudo mkdir -p $SHARED_DIRECTORY
@@ -169,18 +166,23 @@ sudo systemctl restart smbd
 
 echo "Setup complete. User '$USERNAME' created with SMB share and static IP set to '$STATIC_IP'."
 ```
-Save the file: Ctrl+X and Yes.
+Save the file: **Ctrl+X and Yes**.
 Make the file executable:
 ```
 chmod +x staticip.sh
 ```
-Run the script:
+Run the script to set the static IP:
 ```
 sudo ./staticip.sh
 ```
-Reboot the RPI. It would stop your PuTTY session. After few minutes you can re-connect by PuTTY setting the static IP you set.
+Reboot the RPi. It would stop your PuTTY session. 
+
+```
+sudo reboot
+```
+After a few minutes, you can re-connect by PuTTY using the static IP you set.
  
-## STEP 4: Configure the storage
+## STEP 4: Check the storage disk:
 Find your drive: 
 ```
 lsblk
@@ -189,28 +191,15 @@ If you had used the script from step 3 a partition is already there: sda1.
 
 ![Screenshot 2024-08-02 151915](https://github.com/user-attachments/assets/c6fd37ce-b1ca-45b6-889a-d2ecf44cfa9f)
 
-If the partition is not there: 
-```
-sudo fdisk /dev/sda
-```
-## STEP 5: Prepare mount point and mount disk
+## STEP 5: Check the disk is already mounted 
 This is the command for formatting the disk:
 ```
 sudo mkfs.ext4 /dev/sda1
 ```
-If you had used the script from step 3 it will be already mounted. Go to next step.
-
+If you had used the script from step 3 it will be already mounted. 
 ![Screenshot 2024-08-02 152445](https://github.com/user-attachments/assets/10ba8987-36ea-49f7-8cfd-a01b651a7d8b)
 
-If not mounted:
-
-![Screenshot 2024-07-08 212705](https://github.com/user-attachments/assets/3bc50103-d5c1-4a36-b79c-08876d9150c8)
-
-You must create a mount point:
-```
-sudo mkdir -p /mnt/sda1
-```
-Ensure the “share” file is mounted every time the RPI reboots. Access to Edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time:
+We need to ensure the “share” file is mounted every time the RPi reboots. Access to Edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time:
 ```
 sudo nano /etc/fstab
 ```
@@ -220,8 +209,8 @@ dev/sda1 /mnt/sda1/ ext4 defaults,noatime 0 1
 ```
 ![Screenshot 2024-07-08 215338](https://github.com/user-attachments/assets/920bb773-fc0b-413a-a2d0-ca52adb9ecb0)
 
-Ctrl+x and Y to save the changes.
-Now you must reload the file "fstab", to do it without to rebooting the system: 
+**Ctrl+x and Y** to save the changes.
+Now you can reload the file "fstab" without to rebooting the system: 
 ```
 sudo mount -av
 ```
@@ -242,12 +231,7 @@ sudo chmod 0777 /mnt/sda1/shared
 ```
 Set directory owner. In this case, the username is "pi": 
 ```
-sudo chown pi /mnt/sda1/shared #sudo chown [your username created at step 5] /mnt/sda1/shared
-```
-Install Samba software. If you used the script from Step 3, it is be already installed.
-If not, use this command:
-```
-sudo apt install -y samba samba-common-bin
+sudo chown pi /mnt/sda1/shared #sudo chown [your username created at step 1] /mnt/sda1/shared
 ```
 Update and upgrade  the system again:
 ```
@@ -268,7 +252,7 @@ At the end of the file copy and edit the next script:
    create mask = 0777
    directory mask = 0777
    read only = no
-   valid users = pi #your user from step 3
+   valid users = pi #your user from step 1
    comment = Samba on Raspberry Pi
 ```
 Restart samba:
