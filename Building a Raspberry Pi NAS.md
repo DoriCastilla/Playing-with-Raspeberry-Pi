@@ -166,7 +166,7 @@ sudo systemctl restart smbd
 
 echo "Setup complete. User '$USERNAME' created with SMB share and static IP set to '$STATIC_IP'."
 ```
-Save the file: **Ctrl+X and Yes**.
+Save the file: **Ctrl+X and Yes**.<br>
 Make the file executable:
 ```
 chmod +x staticip.sh
