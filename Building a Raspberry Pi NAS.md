@@ -200,7 +200,7 @@ If you had used the script from step 3 it will be already mounted.
 
 ![Screenshot 2024-08-02 152445](https://github.com/user-attachments/assets/10ba8987-36ea-49f7-8cfd-a01b651a7d8b)
 
-We need to ensure the “share” file is mounted every time the RPi reboots. Access to Edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time:
+We need to ensure the “share” file is mounted every time the RPi reboots.<br>Access to edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time:
 ```
 sudo nano /etc/fstab
 ```
