@@ -210,7 +210,7 @@ dev/sda1 /mnt/sda1/ ext4 defaults,noatime 0 1
 ```
 ![Screenshot 2024-07-08 215338](https://github.com/user-attachments/assets/920bb773-fc0b-413a-a2d0-ca52adb9ecb0)
 
-**Ctrl+x and Y** to save the changes.
+**Ctrl+x and Y** to save the changes.<br>
 Now you can reload the file "fstab" without to rebooting the system: 
 ```
 sudo mount -av
