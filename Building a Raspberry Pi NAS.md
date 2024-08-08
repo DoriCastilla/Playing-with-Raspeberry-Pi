@@ -2,11 +2,11 @@
 Objective: to install and configure a Raspeberry Pi NAS in a SOHO LAN
 Components: 
 - Raspeberri Pi 3b+ (RPi from now)
-- USB memory or SD card 16GB for the Operative System.
-- Hard disk or USB for storage disk
-- RPI image 
-- PuTTy software (optional)
-- Ehternet (optional)
+- SD card 16GB (it is what I used in this case, but it can be a USB stick also) for the Operative System
+- Hard disk or USB for storage
+- RPi image 
+- [PuTTy](ttps://www.putty.org) software (optional)
+- Ethernet (optional)
 - Screen   
 - Keyboard
 - Mouse
@@ -14,28 +14,31 @@ Components:
 ## STEP 1: Prepare the Raspberry Pi image
 Download the RPi OS image software [here](https://www.raspberrypi.com/software/).
 For this guide I did use **Imager version 1.8.5** downloaded for Windows.
-Plug in the SD card in your card reader. 
+Plug in the SD card in your card reader in your computer and open the image, install it, and follow the instructions. 
  
 Select the settings:
 - RPi Device: **RASPBERRY PI 3**
 - Operating system: **RASPBERRY PI OS 64BIT**
-- Storage: **SDHC CARD** (or USB). 
+- Storage: **SD CARD** (in this case). 
  
 Adjust the settings: 
-- Set username and password of your system (in this case it is pi / pi)
-- Add your wifi information if you will connect to the NAS via wifi.
+- Set username and password of your system (in this case: (uid) pi : (pw) pi).
+- Add your wifi information for connect to the NAS via wifi.
 - Select "enable ssh".
  
-Open it and ignore pop-up messages that can come out. 
- 
-Once it is completed with the writing and verifying, set the SDHC card into the RPi, power it on, and connect the hard disk storage and the peripherals (keyboard, screen, and mouse) to the RPi. 
-I also connected my RPI to the internet by Ethernet. Turn the RPi on, it will take a few minutes to get ready.
+Open it and ignore pop-up messages that can come out.
+
+ ![Screenshot 2024-06-13 151644](https://github.com/user-attachments/assets/0266d733-2fa0-4076-8517-ab4eb023d9cb)
+
+Once it is completed, with the writing and verifying, remove the SD card/USB from your computer and set it into the RPi. Connect the hard disk storage and the peripherals (keyboard, screen, and mouse). 
+I also connected my RPI to the internet by Ethernet. 
+Turn the RPi on and wait, it will take a few minutes to get ready.
 
 ## STEP 2: Find the IP of the RPi
 Options:
 1. Via router DHCP leases, look for the RPI system name, you gave the system in the image you installed in the SDHC card.
 2. Via router by the MAC address in the list of connected devices on the router settings.
-3. Open the terminal and write the command (your IP is a number like 192.168.xxx.xxx):  
+3. Open the terminal and write the command (your IP is most likely a number like 192.168.xxx.xxx):  
 ```
 ifconfig
 ```
@@ -44,9 +47,9 @@ ifconfig
 When you connect remotely by PuTTY you will not need the peripherals anymore.
 Open PuTTy.
 Hostname: the IP of your RPI.
-The prompt will open and will ask you for user and password. 
-In this case: pi / pi
- 
+The prompt will open and ask you for the user and password (remember, in this case pi : pi).
+
+## STEP 4: Set a static IP and install and config Samba.
 Update and upgrade the system: 
 ```
 sudo apt update && sudo apt upgrade -y
@@ -58,9 +61,9 @@ nano staticip.sh
 And write down this script and edit it with your information where needed:
 - username and password you set,
 - static IP you choose,
-- gateway and DNS if needed,
-- the owner is the user you set and
-- wifi "yes" if you want to use it: 
+- gateway and DNS,
+- the owner (it is the user you set in step 1) and
+- wifi "no" "yes" if you want to use it: 
 ```
 #!/bin/bash
 
@@ -182,7 +185,7 @@ sudo reboot
 ```
 After a few minutes, you can re-connect by PuTTY using the static IP you set.
  
-## STEP 4: Check the storage disk:
+## STEP 5: Check the storage disk:
 Find your drive: 
 ```
 lsblk
@@ -191,7 +194,7 @@ If you had used the script from step 3 a partition is already there: sda1.
 
 ![Screenshot 2024-08-02 151915](https://github.com/user-attachments/assets/c6fd37ce-b1ca-45b6-889a-d2ecf44cfa9f)
 
-## STEP 5: Check the disk is already mounted 
+## STEP 6: Check the disk is already mounted 
 This is the command for formatting the disk:
 ```
 sudo mkfs.ext4 /dev/sda1
@@ -221,7 +224,7 @@ ls -l /mnt
 ```
 ![Screenshot 2024-08-02 112132](https://github.com/user-attachments/assets/7a20d97a-6446-4844-bd17-dc235b9c9ee3)
 
-## STEP 6: Create the folder you will share
+## STEP 7: Create the folder you will share
 Create a shared folder on the mount point of the partition we made in the storage drive:
 ```
 sudo mkdir -p /mnt/sda1/shared
@@ -238,7 +241,7 @@ Update and upgrade  the system again:
 ```
 sudo apt update && sudo apt upgrade  -y
 ```
-## STEP 7: Configure Samba software
+## STEP 8: Configure Samba software
 Edit the information into smb.conf file:
 ```
 sudo nano /etc/samba/smb.conf
@@ -260,8 +263,8 @@ Restart samba:
 ```
 sudo systemctl restart smbd
 ```
-## STEP 8: Map Samba drive to access the network folder
-### STEP 8.1: Map Samba drive in Windows 11
+## STEP 9: Map Samba drive to access the network folder
+### STEP 9.1: Map Samba drive in Windows 11
 Option 1: 
 By the interface:
 
@@ -282,7 +285,7 @@ By Command Prompt:
 C:\Users\quedi>net use Z: \\192.168.1.113\shared /user:pi
 ```
 Remember to set the information of your network.
-### STEP 8.2: Map Samba drive in Ubuntu 22
+### STEP 9.2: Map Samba drive in Ubuntu 22
 In Terminal, update and upgrade the Ubuntu system:
 ```
 sudo apt update && sudo apt upgrade -y
