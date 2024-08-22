@@ -233,9 +233,7 @@ sudo ./staticip.sh
 ```
 ![raspberry_11](https://github.com/user-attachments/assets/2ab60a82-3a43-4e9b-9fea-af2d8d507415)
 
-
 Reboot the RPi. It would stop your PuTTY session. 
-
 ```
 sudo reboot
 ```
@@ -264,7 +262,7 @@ If you had used the script from step 3 it will be already mounted.
 
 ![raspberry_14](https://github.com/user-attachments/assets/da448682-c65d-4983-b4e5-5bc385072bb7)
 
-We need to ensure the “share” file is mounted every time the RPi reboots.
+It needs to ensure the “share” file is mounted every time the RPi reboots.
 
 Access to edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time (here you move with arrow keys):
 ```
@@ -284,9 +282,6 @@ Now you can reload the file "fstab" without to rebooting the system:
 sudo mount -av
 ```
 ![raspberry_16](https://github.com/user-attachments/assets/b8bf9ba0-0775-455e-91ce-b193cdac46b3)
-
-
-
 
 ## STEP 6: Create the folder you will share
 Create a shared folder on the mount point of the partition we made in the storage drive and set the folder permissions:
