@@ -1,37 +1,73 @@
 # **How to build a Raspberry Pi NAS. Guide for beginners**
-Objective: to install and configure a Raspeberry Pi NAS in a SOHO LAN
-Components: 
+
+## Objective
+To install and configure a Raspeberry Pi NAS in a SOHO LAN
+## Steps
+1. Prepare the Raspberry Pi image
+2. Find the IP of the RPi
+3. Access to your RPi in remote
+4. Set a static IP and install and config Samba
+5. Check the storage disk is already mounted
+6. Create the folder you will share
+7. Configure Samba software
+8. Map Samba drive to access the network folder
+## Tools: 
+- Computer 
+- Windows 11
 - Raspeberri Pi 3b+ (RPi from now)
 - SD card 16GB (it is what I used in this case, but it can be a USB stick also) for the Operative System
+- An SD card reader if not in your computer.
 - Hard disk or USB for storage
-- RPi image 
-- [PuTTy](ttps://www.putty.org) software (optional)
-- Ethernet (optional)
+- [RPi image](https://www.raspberrypi.com/software/) software 
+- [PuTTY](https://www.putty.org/) software  
+- Ethernet  
 - Screen   
 - Keyboard
 - Mouse
+## Configuration:
+- User id (uid): pi
+- Password (pw): pi
+- Static IP: 192.168.1.113
+- Gateway: 192.168.1.1
+- Subnet: 255.255.255.0
 
 ## STEP 1: Prepare the Raspberry Pi image
 Download the RPi OS image software [here](https://www.raspberrypi.com/software/).
-For this guide I did use **Imager version 1.8.5** downloaded for Windows.
-Plug in the SD card in your card reader in your computer and open the image, install it, and follow the instructions. 
+For this guide I did use **Imager version 1.8.5** downloaded for Windows.<br>
+Open the program and install it.
+
+![raspberry_1](https://github.com/user-attachments/assets/27107e8c-2acb-46cb-8ada-f48bfb89f89c)
+
+Plug in the SD card in your card reader on your computer, open the image, install it, and follow the instructions. 
  
-Select the settings:
+Select the settings. For this case:
 - RPi Device: **RASPBERRY PI 3**
 - Operating system: **RASPBERRY PI OS 64BIT**
-- Storage: **SD CARD** (in this case). 
- 
-Adjust the settings: 
+- Storage: **SD CARD**  
+
+Press `NEXT`.
+
+Select `EDIT SETTINGS` and set your information. In this case: 
+
+![raspberry_2](https://github.com/user-attachments/assets/a9bb1470-75cd-428a-a26a-6c337d5d15bc)
+
 - Set username and password of your system (in this case: (uid) pi : (pw) pi).
 - Add your wifi information for connect to the NAS via wifi.
-- Select "enable ssh".
- 
-Open it and ignore pop-up messages that can come out.
+- In "SERVICES" Select "enable SSH".
 
- ![Screenshot 2024-06-13 151644](https://github.com/user-attachments/assets/0266d733-2fa0-4076-8517-ab4eb023d9cb)
+![raspberry_3](https://github.com/user-attachments/assets/b1df8177-7d0b-4207-a723-7ef3360b87e3)
 
-Once it is completed, with the writing and verifying, remove the SD card/USB from your computer and set it into the RPi. Connect the hard disk storage and the peripherals (keyboard, screen, and mouse). 
-I also connected my RPI to the internet by Ethernet. 
+Select `SAVE` and `YES`. 
+
+![raspberry_4](https://github.com/user-attachments/assets/ea20d1e3-c330-4c86-ab94-5e1fd4471b0a)
+
+When the software informs you the SD card will erase and ask for continue, select `YES` and ignore pop-up messages that can come out.
+
+![raspberry_5](https://github.com/user-attachments/assets/ac37e08a-d749-4d0b-95b3-6a12ba4cd732)
+
+Once it is completed, with the writing and verifying (it will take some minutes), remove the SD card/USB from your computer and set it into the RPi.  
+Connect the hard disk storage and the peripherals (keyboard, screen, and mouse) to the RPi. <br>
+I also connected my RPI to the internet by Ethernet. <br>
 Turn the RPi on and wait, it will take a few minutes to get ready.
 
 ## STEP 2: Find the IP of the RPi
@@ -42,28 +78,46 @@ Options:
 ```
 ifconfig
 ```
+![raspberry_6](https://github.com/user-attachments/assets/480de214-797b-41a9-8162-9914983017f1)
 
 ## STEP 3: Access to your RPi in remote
-When you connect remotely by PuTTY you will not need the peripherals anymore.
-Open PuTTy.
-Hostname: the IP of your RPI.
-The prompt will open and ask you for the user and password (remember, in this case pi : pi).
+When you connect remotely by [PuTTY](https://www.putty.org/) you will not need the peripherals anymore.
 
-## STEP 4: Set a static IP and install and config Samba.
-Update and upgrade the system: 
+Open PuTTy.
+Hostname: the IP of your RPi.
+```192.168.1.116```
+Connection tipe: SSH<br>
+Press `Open`
+![raspberry_7](https://github.com/user-attachments/assets/f1cbcd48-7111-4d22-af7c-73e86c3ca078)
+
+The PuTTy command line interface will open. <br>
+Probably, it will prompt a warning of potential security breach, just `Accept` it.<br>
+Login with your user and password. <br>
+In this case: <br>
+uid: pi <br>
+pw: pi
+
+![raspberry_8](https://github.com/user-attachments/assets/584f5dc2-c1c4-4d09-8f6d-445b61185da6)
+
+## STEP 4: Set a static IP and install and config Samba
+Update and upgrade the system (paste with right button of the mouse): 
 ```
 sudo apt update && sudo apt upgrade -y
 ```
+![raspberry_9](https://github.com/user-attachments/assets/49d7e708-5076-4b39-8c66-98b313ab361d)
+
+
 Set the static IP and install and config Samba in the staticip.sh : 
 ```
 nano staticip.sh
 ```
 And write down this script and edit it with your information where needed:
-- username and password you set,
-- static IP you choose,
-- gateway and DNS,
-- the owner (it is the user you set in step 1) and
-- wifi "no" "yes" if you want to use it: 
+- username and password you set (in this case: pi / pi)
+- static IP you choose (in this case: 192.168.1.113)
+- gateway and DNS (in this case is the same)
+- the owner (in this case: pi) and
+- wifi "no" or "yes" depending if you want to use it (in this case I chose no)
+  
 ```
 #!/bin/bash
 
@@ -169,41 +223,49 @@ sudo systemctl restart smbd
 
 echo "Setup complete. User '$USERNAME' created with SMB share and static IP set to '$STATIC_IP'."
 ```
-Save the file: **Ctrl+X and Yes**.<br>
-Make the file executable:
+Save the file: `Ctrl+X` and `Y`<br>
+Confirm it: `Y`
+
+Now, will make the file executable and run the script to set the static IP:
 ```
 chmod +x staticip.sh
-```
-Run the script to set the static IP:
-```
 sudo ./staticip.sh
 ```
+![raspberry_11](https://github.com/user-attachments/assets/2ab60a82-3a43-4e9b-9fea-af2d8d507415)
+
+
 Reboot the RPi. It would stop your PuTTY session. 
 
 ```
 sudo reboot
 ```
-After a few minutes, you can re-connect by PuTTY using the static IP you set.
- 
-## STEP 5: Check the storage disk:
+It will stop the PuTTY connection, the IP is changed. 
+
+![raspberry_12](https://github.com/user-attachments/assets/057b70a1-d5a1-4852-9724-827928337311)
+
+After a few minutes, you can check your RPi new IP (step 2).
+
+Then, you can re-connect by PuTTY (step 3) using the static IP you set: 192.168.1.113
+
+## STEP 5: Check the storage disk is already mounted
 Find your drive: 
 ```
 lsblk
 ```
 If you had used the script from step 3 a partition is already there: sda1.
 
-![Screenshot 2024-08-02 151915](https://github.com/user-attachments/assets/c6fd37ce-b1ca-45b6-889a-d2ecf44cfa9f)
+![raspberry_13](https://github.com/user-attachments/assets/928e96c2-f717-487e-835a-02601e6c819c)
 
-## STEP 6: Check the disk is already mounted 
-This is the command for formatting the disk:
+Formatting the disk:
 ```
 sudo mkfs.ext4 /dev/sda1
 ```
 If you had used the script from step 3 it will be already mounted. 
 
-![Screenshot 2024-08-02 152445](https://github.com/user-attachments/assets/10ba8987-36ea-49f7-8cfd-a01b651a7d8b)
+![raspberry_14](https://github.com/user-attachments/assets/da448682-c65d-4983-b4e5-5bc385072bb7)
 
-We need to ensure the “share” file is mounted every time the RPi reboots.<br>Access to edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time:
+We need to ensure the “share” file is mounted every time the RPi reboots.<br>
+Access to edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time:
 ```
 sudo nano /etc/fstab
 ```
@@ -211,37 +273,39 @@ Add this line at the end:
 ```
 dev/sda1 /mnt/sda1/ ext4 defaults,noatime 0 1
 ```
-![Screenshot 2024-07-08 215338](https://github.com/user-attachments/assets/920bb773-fc0b-413a-a2d0-ca52adb9ecb0)
+![raspberry_15](https://github.com/user-attachments/assets/ecdc01cf-e0a3-45a0-8d46-b2692a0b8115)
 
-**Ctrl+x and Y** to save the changes.<br>
+Save the file: `Ctrl+X` and `Y`<br>
+Confirm it: `Y`
+
 Now you can reload the file "fstab" without to rebooting the system: 
 ```
 sudo mount -av
 ```
-Check the drive is already mounted:
+![raspberry_16](https://github.com/user-attachments/assets/b8bf9ba0-0775-455e-91ce-b193cdac46b3)
+
+**Check the drive is already mounted:**
 ```
 ls -l /mnt
 ```
 ![Screenshot 2024-08-02 112132](https://github.com/user-attachments/assets/7a20d97a-6446-4844-bd17-dc235b9c9ee3)
 
-## STEP 7: Create the folder you will share
-Create a shared folder on the mount point of the partition we made in the storage drive:
+## STEP 6: Create the folder you will share
+Create a shared folder on the mount point of the partition we made in the storage drive and set the folder permissions:
 ```
 sudo mkdir -p /mnt/sda1/shared
-```
-Set the folder permissions:
-```
 sudo chmod 0777 /mnt/sda1/shared
 ```
-Set directory owner. In this case, the username is "pi": 
+Set directory owner: *sudo chown pi /mnt/sda1/shared #sudo chown [your username created at step 1] /mnt/sda1/shared*<br> 
+In this case, the username is "pi": 
 ```
-sudo chown pi /mnt/sda1/shared #sudo chown [your username created at step 1] /mnt/sda1/shared
+sudo chown pi /mnt/sda1/shared #sudo chown pi /mnt/sda1/shared
 ```
 Update and upgrade  the system again:
 ```
 sudo apt update && sudo apt upgrade  -y
 ```
-## STEP 8: Configure Samba software
+## STEP 7: Configure Samba software
 Edit the information into smb.conf file:
 ```
 sudo nano /etc/samba/smb.conf
@@ -263,8 +327,8 @@ Restart samba:
 ```
 sudo systemctl restart smbd
 ```
-## STEP 9: Map Samba drive to access the network folder
-### STEP 9.1: Map Samba drive in Windows 11
+## STEP 8: Map Samba drive to access the network folder
+### A) Map Samba drive in Windows 11
 Option 1: 
 By the interface:
 
@@ -285,7 +349,7 @@ By Command Prompt:
 C:\Users\quedi>net use Z: \\192.168.1.113\shared /user:pi
 ```
 Remember to set the information of your network.
-### STEP 9.2: Map Samba drive in Ubuntu 22
+### B): Map Samba drive in Ubuntu 22
 In Terminal, update and upgrade the Ubuntu system:
 ```
 sudo apt update && sudo apt upgrade -y
@@ -326,7 +390,7 @@ smb://192.168.1.113/shared
 Click Connect.
 Set username and password.
 
-Open the folder and start to share between your LAN devices!
+**Open the folder and start to share between your LAN devices!**
 
 
 
