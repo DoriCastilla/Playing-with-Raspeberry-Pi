@@ -6,12 +6,12 @@ To install and configure a Raspeberry Pi NAS ([Network Attached Storage](https:/
 1. [Prepare the Raspberry Pi image](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-1-prepare-the-raspberry-pi-image)
 2. [Find the IP of the RPi](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-2-find-the-IP-of-the-RPi
 )
-3. Access to your RPi in remote
-4. Set a static IP and install and config Samba
-5. Check the storage disk is already mounted
-6. Create the folder you will share
-7. Configure Samba software
-8. Map Samba drive to access the network folder
+3. [Access to your RPi in remote](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-3-access-to-your-RPi-in-remote)
+4. [Set a static IP and install and config Samba](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-4-Set-a-static-IP-and-install-and-config-Samba)
+5. [Check the storage disk is already mounted](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-5-Check-the-storage-disk-is-already-mounted)
+6. [Create the folder you will share](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-6-Create-the-folder-you-will-share)
+7. [Configure Samba software](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-7-Configure-Samba-software)
+8. [Maping Samba drive to access the network folder](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-8-Maping-Samba-drive-to-access-the-network-folder)
 ## Tools 
 - Computer 
 - Windows 11
@@ -330,7 +330,7 @@ Restart samba:
 sudo systemctl restart smbd
 ```
 
-## STEP 8: Map Samba drive to access the network folder
+## STEP 8: Maping Samba drive to access the network folder
 ### A) Map Samba drive in Windows 11
 **Option 1: By the interface** 
 Open File Manager<br>
