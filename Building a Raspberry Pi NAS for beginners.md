@@ -400,9 +400,16 @@ Set username and password.
 
 ![raspberry_21](https://github.com/user-attachments/assets/0fcd4c91-f7c2-4986-89ab-6f278dcb16d0)
 
-**Open the folder and start to share between your LAN devices!**       
+**Open the folder and start to share between your LAN devices!**      
 
 ![225be5b42cd3b82c3f93c5c274a028df (2)](https://github.com/user-attachments/assets/afe44107-e4ec-45ed-87d6-b5af568c90b2)
+
+## Web references:
+- https://www.raspberrypi.com/tutorials/nas-box-raspberry-pi-tutorial/
+- https://www.raspberrypi.com/software/
+- https://www.howtogeek.com/755213/how-to-map-a-network-drive-on-windows-11/
+
+
 
 
 
