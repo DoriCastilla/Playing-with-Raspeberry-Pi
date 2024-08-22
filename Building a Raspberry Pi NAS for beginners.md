@@ -4,7 +4,8 @@
 To install and configure a Raspeberry Pi NAS ([Network Attached Storage](https://ca.wikipedia.org/wiki/Network-attached_storage)) in a SOHO LAN
 ## Steps
 1. [Prepare the Raspberry Pi image](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-1-prepare-the-raspberry-pi-image)
-2. Find the IP of the RPi
+2. [Find the IP of the RPi](https://github.com/DoriCastilla/Playing-with-Raspeberry-Pi/blob/main/Building%20a%20Raspberry%20Pi%20NAS%20for%20beginners.md#step-2-find-the-IP-of-the-RPi
+)
 3. Access to your RPi in remote
 4. Set a static IP and install and config Samba
 5. Check the storage disk is already mounted
