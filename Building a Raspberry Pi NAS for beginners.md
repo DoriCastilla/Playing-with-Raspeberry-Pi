@@ -11,7 +11,7 @@ To install and configure a Raspeberry Pi NAS ([Network Attached Storage](https:/
 6. Create the folder you will share
 7. Configure Samba software
 8. Map Samba drive to access the network folder
-## Tools: 
+## Tools 
 - Computer 
 - Windows 11
 - Raspeberri Pi 3b+ (RPi from now)
@@ -24,7 +24,7 @@ To install and configure a Raspeberry Pi NAS ([Network Attached Storage](https:/
 - Screen   
 - Keyboard
 - Mouse
-## Configuration:
+## Configuration (used in this exercise)
 - User id (uid): pi
 - Password (pw): pi
 - Static IP: 192.168.1.113
@@ -400,7 +400,14 @@ Set username and password.
 
 ![raspberry_21](https://github.com/user-attachments/assets/0fcd4c91-f7c2-4986-89ab-6f278dcb16d0)
 
-**Open the folder and start to share between your LAN devices!**
+**Open the folder and start to share between your LAN devices!**       
+
+![225be5b42cd3b82c3f93c5c274a028df (2)](https://github.com/user-attachments/assets/afe44107-e4ec-45ed-87d6-b5af568c90b2)
+
+
+
+
+
 
 
 
