@@ -1,7 +1,7 @@
 # **How to build a Raspberry Pi NAS. Guide for beginners**
 
 ## Objective
-To install and configure a Raspeberry Pi NAS in a SOHO LAN
+To install and configure a Raspeberry Pi NAS ([Network Attached Storage in a SOHO LAN](https://ca.wikipedia.org/wiki/Network-attached_storage))
 ## Steps
 1. Prepare the Raspberry Pi image
 2. Find the IP of the RPi
