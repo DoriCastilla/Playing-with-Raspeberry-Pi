@@ -107,7 +107,7 @@ sudo apt update && sudo apt upgrade -y
 ![raspberry_9](https://github.com/user-attachments/assets/49d7e708-5076-4b39-8c66-98b313ab361d)
 
 
-Set the static IP and install and config Samba in the staticip.sh : 
+Set the static IP and install and config Samba in the staticip.sh editing the file: 
 ```
 nano staticip.sh
 ```
@@ -264,8 +264,9 @@ If you had used the script from step 3 it will be already mounted.
 
 ![raspberry_14](https://github.com/user-attachments/assets/da448682-c65d-4983-b4e5-5bc385072bb7)
 
-We need to ensure the “share” file is mounted every time the RPi reboots.<br>
-Access to edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time:
+We need to ensure the “share” file is mounted every time the RPi reboots.
+
+Access to edition mode to the fstab file, and fstab file will automatically mounts all filesystems at boot time (here you move with arrow keys):
 ```
 sudo nano /etc/fstab
 ```
@@ -284,11 +285,8 @@ sudo mount -av
 ```
 ![raspberry_16](https://github.com/user-attachments/assets/b8bf9ba0-0775-455e-91ce-b193cdac46b3)
 
-**Check the drive is already mounted:**
-```
-ls -l /mnt
-```
-![Screenshot 2024-08-02 112132](https://github.com/user-attachments/assets/7a20d97a-6446-4844-bd17-dc235b9c9ee3)
+
+
 
 ## STEP 6: Create the folder you will share
 Create a shared folder on the mount point of the partition we made in the storage drive and set the folder permissions:
@@ -305,6 +303,12 @@ Update and upgrade  the system again:
 ```
 sudo apt update && sudo apt upgrade  -y
 ```
+Check the drive is already mounted with right permissions:
+```
+ls -l /mnt
+```
+![raspberry_17](https://github.com/user-attachments/assets/c6cb6b63-eae1-4bec-99be-6bf2044e9dd4)
+
 ## STEP 7: Configure Samba software
 Edit the information into smb.conf file:
 ```
@@ -323,32 +327,41 @@ At the end of the file copy and edit the next script:
    valid users = pi #your user from step 1
    comment = Samba on Raspberry Pi
 ```
+Save the file: `Ctrl+X` and `Y`<br>
+
 Restart samba:
 ```
 sudo systemctl restart smbd
 ```
+
 ## STEP 8: Map Samba drive to access the network folder
 ### A) Map Samba drive in Windows 11
-Option 1: 
-By the interface:
+**Option 1: By the interface** 
+Open File Manager<br>
+In the menu, select `···`<br>
+Select `Map network drive`<br>
 
-![Screenshot 2024-07-08 221141](https://github.com/user-attachments/assets/0f7f9244-c598-4c4a-b17c-9a225068be45)
+![raspberry_18](https://github.com/user-attachments/assets/e43cc6df-a479-4034-99bb-b4267ed4420e)
 
 Create the access to the network folder:
 Select a not-used letter for the drive and set the folder address.
-In this case, it would be: 
-Z:
-\\192.168.1.113\shared 
+In this case, it would be: `Z:`
+Folder: 
+```
+\\192.168.1.113\shared
+```
+And `Finish`
 Remember, you had set the static IP and the name of the shared folder comes in the script.
 
-![Screenshot 2024-07-09 141955](https://github.com/user-attachments/assets/81004763-fba9-460a-9ba9-7d221d4bcc19)
+![raspberry_20](https://github.com/user-attachments/assets/cfbc121d-805f-47b5-879b-6ac182e4f638)
 
-Option 2: 
-By Command Prompt:
+**Option 2: By Command Prompt** 
+Open the command prompt in your computer
 ```
-C:\Users\quedi>net use Z: \\192.168.1.113\shared /user:pi
+net use Z: \\192.168.1.113\shared /user:pi
 ```
-Remember to set the information of your network.
+Remember, to set the information you set for your network.
+
 ### B): Map Samba drive in Ubuntu 22
 In Terminal, update and upgrade the Ubuntu system:
 ```
@@ -387,8 +400,10 @@ Now, by the interface:
 ```
 smb://192.168.1.113/shared
 ```
-Click Connect.
+Select `Connect`
 Set username and password.
+
+![raspberry_21](https://github.com/user-attachments/assets/0fcd4c91-f7c2-4986-89ab-6f278dcb16d0)
 
 **Open the folder and start to share between your LAN devices!**
 
