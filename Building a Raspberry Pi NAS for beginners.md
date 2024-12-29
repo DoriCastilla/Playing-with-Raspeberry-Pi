@@ -134,60 +134,37 @@ SHARED_DIRECTORY_OWNER="pi:pi" # Change this to your desired owner
 ETH_INTERFACE="eth0"
 WIFI_INTERFACE="wlan0"
 USE_WIFI="no" # Change this to "yes" if you are using WiFi
+CONNECTION_NAME="Wired connection 1" # Change this to match your connection name
 
-# Function to set static IP for Bookworm 64-bit
-set_static_ip_bookworm() {
-    echo "Setting static IP for Bookworm 64-bit..."
-    cat <<EOF | sudo tee /etc/network/interfaces.d/$INTERFACE
-auto $INTERFACE
-iface $INTERFACE inet static
-    address $STATIC_IP
-    netmask 255.255.255.0
-    gateway $GATEWAY
-    dns-nameservers $DNS
-EOF
-    echo "Static IP set for Bookworm 64-bit."
-}
+# Function to set static IP using nmcli
+set_static_ip_nmcli() {
+    echo "Setting static IP using nmcli..."
+    sudo nmcli connection modify "$CONNECTION_NAME" \
+		ipv4.addresses "$STATIC_IP/24" \
+        ipv4.gateway "$GATEWAY" \
+        ipv4.dns "$DNS" \
+        ipv4.method manual
 
-# Function to set static IP for 32-bit OS
-set_static_ip_32bit() {
-    echo "Setting static IP for 32-bit OS..."
-    sudo cp /etc/dhcpcd.conf /etc/dhcpcd.conf.backup
-
-    cat <<EOF | sudo tee /etc/dhcpcd.conf
-interface $INTERFACE
-static ip_address=$STATIC_IP/24
-static routers=$GATEWAY
-static domain_name_servers=$DNS
-EOF
-
-    # Restart the dhcpcd service
-    sudo systemctl restart dhcpcd
-    echo "Static IP set for 32-bit OS."
+    sudo nmcli connection up "$CONNECTION_NAME"
+    echo "Static IP set using nmcli."
 }
 
 # Determine the correct interface to use
 if [ "$USE_WIFI" == "yes" ]; then
     INTERFACE=$WIFI_INTERFACE
+    CONNECTION_NAME="Wi-Fi connection" # Adjust this if your Wi-Fi connection h>
 else
     INTERFACE=$ETH_INTERFACE
 fi
 
-# Check OS version and architecture and configure static IP accordingly
-os_version=$(lsb_release -c | awk '{print $2}')
-architecture=$(uname -m)
-
-if [[ "$os_version" == "bookworm" && "$architecture" == "aarch64" ]]; then
-    set_static_ip_bookworm
-else
-    set_static_ip_32bit
-fi
+# Set static IP using nmcli
+set_static_ip_nmcli
 
 # Update and install samba
 echo "Updating system and installing Samba..."
 sudo apt-get update
 sudo apt-get install samba samba-common-bin -y
- 
+
 # Create a new user
 echo "Creating new user..."
 sudo adduser --disabled-password --gecos "" $USERNAME
@@ -222,7 +199,7 @@ EOF'
 echo "Restarting Samba service..."
 sudo systemctl restart smbd
 
-echo "Setup complete. User '$USERNAME' created with SMB share and static IP set to '$STATIC_IP'."
+echo "Setup complete. User '$USERNAME' created with SMB share and static IP set>
 ```
 Save the file: `Ctrl+X` and `Y`<br>
 Confirm it: `Y`
